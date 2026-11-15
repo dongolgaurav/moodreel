@@ -230,7 +230,7 @@ def rank(
         if "content" in usable and terms and terms[position]:
             parts.append(f"{content_label}: {', '.join(terms[position])}")
         if "mood" in usable and row["mood_score"] >= 0.7:
-            parts.append("Plot tone suits " + (f"a {mood.lower()} mood" if mood else "your usual taste"))
+            parts.append("Plot tone suits " + (f"{'an' if mood[0] in 'AEIOU' else 'a'} {mood.lower()} mood" if mood else "your usual taste"))
         parts.append(f"Vote-adjusted rating {weighted.iloc[position]:.1f}")
         reasons.append(" · ".join(parts))
     ranked["why"] = reasons
