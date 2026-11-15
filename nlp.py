@@ -33,7 +33,7 @@ from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, TfidfVectorizer
 # --------------------------------------------------------------------------
 
 _stemmer = PorterStemmer()
-_WORD = re.compile(r"[a-z]{2,}")
+_WORD = re.compile(r"[a-z]{3,}")
 # Stem -> shortest original word seen, so explanations can show "robbery"
 # to the user instead of the stem "robberi".
 _display_word: dict[str, str] = {}
@@ -366,7 +366,7 @@ def parse_query(text: str, today: date | None = None) -> ParsedQuery:
 
     # --- "like Inception": a seed movie for content-based ranking ----------
     seed = take(
-        r"\b(?:similar to|in the style of|(?<!would )(?<!i'd )(?<!feel )(?<!i )(?<!we )like)\s+"
+        r"\b(?:similar to|in the style of|(?<!would )(?<!i'd )(?<!feel )(?<! i )(?<! we )like)\s+"
         r"(?!a\b|an\b|to\b|watching\b|something\b|some\b|that\b|it\b|this\b)"
         r"(.+?)(?=\s+(?:but|with|from|in the|under|over|rated|starring|directed|before|after|since)\b"
         r"|[,.;!?]|\s*$)"

@@ -209,8 +209,10 @@ def discover_page() -> None:
                        placeholder="e.g. feel-good 90s comedy under two hours with Tom Hanks")
         button.form_submit_button("Search", type="primary", on_click=apply_query, width="stretch")
     st.caption("Try one of these:")
-    for column, example in zip(st.columns(len(EXAMPLE_QUERIES)), EXAMPLE_QUERIES):
-        column.button(example, key=f"btn_example_{example}", on_click=apply_query, args=(example,),
+    for index, example in enumerate(EXAMPLE_QUERIES):
+        if index % 2 == 0:
+            example_columns = st.columns(2)
+        example_columns[index % 2].button(example, key=f"btn_example_{example}", on_click=apply_query, args=(example,),
                       width="stretch")
 
     if session["q_notes"]:
@@ -506,10 +508,11 @@ def _winner(first: dict, second: dict, field: str, unit: str, higher: str, lower
     if not a or not b or pd.isna(a) or pd.isna(b) or a == b:
         return None
     leader, trailer = (first, second) if a > b else (second, first)
-    high, low = max(a, b), min(a, b)
+    shown = "{:.1f}" if field == "rating" else "{:,.0f}"
+    high, low = shown.format(max(a, b)), shown.format(min(a, b))
     if lower_is:
-        return f"**{trailer['title']}** is {lower_is} ({low:g}{unit} against {high:g}{unit})."
-    return f"**{leader['title']}** {higher} ({high:g}{unit} against {low:g}{unit})."
+        return f"**{trailer['title']}** is {lower_is} ({low}{unit} against {high}{unit})."
+    return f"**{leader['title']}** {higher} ({high}{unit} against {low}{unit})."
 
 
 @safe_page

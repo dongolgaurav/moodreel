@@ -129,6 +129,10 @@ def explain_overlap(seed: dict, other: dict, overlap: dict, terms: list[str]) ->
         reasons.append("Same genres: " + ", ".join(overlap["shared_genres"]))
     if overlap["shared_keywords"]:
         reasons.append("Shared themes: " + ", ".join(overlap["shared_keywords"][:4]))
+    # Plot terms that merely repeat a genre or a shared keyword add nothing.
+    covered = {word.lower() for genre in overlap["shared_genres"] for word in genre.split()}
+    covered |= {keyword.lower() for keyword in overlap["shared_keywords"]}
+    terms = [t for t in terms if t not in covered and not set(t.split()) & covered]
     if terms:
         reasons.append("Similar plot language: " + ", ".join(terms))
     if overlap["shared_directors"]:
@@ -226,8 +230,7 @@ def rank(
         if "content" in usable and terms and terms[position]:
             parts.append(f"{content_label}: {', '.join(terms[position])}")
         if "mood" in usable and row["mood_score"] >= 0.7:
-            tone = nlp.tone_label(row["tone"]).lower()
-            parts.append(f"{tone.capitalize()} tone fits" + (f" a {mood.lower()} mood" if mood else " your taste"))
+            parts.append("Plot tone suits " + (f"a {mood.lower()} mood" if mood else "your usual taste"))
         parts.append(f"Vote-adjusted rating {weighted.iloc[position]:.1f}")
         reasons.append(" · ".join(parts))
     ranked["why"] = reasons

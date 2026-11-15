@@ -116,7 +116,7 @@ def similar_pool(seed: dict) -> pd.DataFrame:
         )
     frame = frame_for([movie["id"] for movie in found])
     # Very low vote counts usually mean incomplete metadata and weak matches.
-    return frame[frame["votes"] >= 50].reset_index(drop=True)
+    return frame[frame["votes"] >= 300].reset_index(drop=True)
 
 
 def profile_pool(watchlist: pd.DataFrame) -> pd.DataFrame:

@@ -98,7 +98,9 @@ def test_parser_mood_people_seed_and_theme():
     assert q.mood == "Uplifting" and q.director == "steven soderbergh"
     assert q.free_text == "heist"
     assert nlp.parse_query("something like inception but funny", TODAY).similar_to == "inception"
+    assert nlp.parse_query("highly rated sci-fi like Inception", TODAY).similar_to == "inception"
     assert nlp.parse_query("I'd like a comedy", TODAY).similar_to is None
+    assert nlp.parse_query("i like heist movies", TODAY).similar_to is None
     assert nlp.parse_query("a thriller with a twist", TODAY).actors == []
     assert nlp.parse_query("starring tom hanks and meg ryan", TODAY).actors == ["tom hanks", "meg ryan"]
     assert nlp.parse_query("not too dark", TODAY).mood == "Light-hearted"

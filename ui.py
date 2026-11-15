@@ -78,7 +78,7 @@ def movie_label(movie: dict) -> str:
 
 def meta_line(movie: dict) -> str:
     """One-line summary: rating, votes, runtime, certification, tone."""
-    parts = [f"★ {movie['rating']:.1f} ({movie['votes']:,} votes)"]
+    parts = [f"★ {movie['rating']:.1f} ({movie['votes']:,} votes)" if movie["votes"] else "Not yet rated"]
     runtime = as_int(movie.get("runtime"))
     if runtime:
         parts.append(f"{runtime} min")
@@ -156,7 +156,7 @@ def movie_card(
             if similar.button("Similar", key=f"btn_{key}_{movie_id}_sim", icon=":material/hub:",
                               help="Find movies like this one", width="stretch"):
                 _open_similar(movie)
-            with details.popover("Details", icon=":material/info:", width="stretch"):
+            with details.popover("More", icon=":material/info:", width="stretch"):
                 if movie.get("tagline"):
                     st.markdown(f"*{movie['tagline']}*")
                 st.markdown(

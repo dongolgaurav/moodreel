@@ -145,8 +145,12 @@ class Filters:
             parts.append(f"Rating {self.min_rating:g}+")
         if self.min_votes > 0:
             parts.append(f"{self.min_votes:,}+ votes")
-        if self.runtime_min or self.runtime_max:
-            parts.append(f"Runtime {self.runtime_min or 0} to {self.runtime_max or '240+'} min")
+        if self.runtime_min and self.runtime_max:
+            parts.append(f"Runtime {self.runtime_min} to {self.runtime_max} min")
+        elif self.runtime_max:
+            parts.append(f"Runtime up to {self.runtime_max} min")
+        elif self.runtime_min:
+            parts.append(f"Runtime at least {self.runtime_min} min")
         if self.certifications:
             parts.append("Certified " + " / ".join(self.certifications))
         if self.language:
